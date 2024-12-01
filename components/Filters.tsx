@@ -1,25 +1,48 @@
 'use client'
+
+import { formUrlQuery } from "@/sanity/utils"
+import { useRouter, useSearchParams } from "next/navigation"
+// import { useRouter } from "next/router"
 import { useState } from "react"
 
-const filters= ['impliment', 'faith', 'music', 'art', 'discover']
+const links = ['All','Art', 'Music', 'Magical', 'Technology', 'Religion']
 
 const Filters = () => {
+  const searchParams = useSearchParams()
   const [active, setActive] = useState('')
+  const router =  useRouter()
 
-  const handleClick = (filter: string) =>{
-    setActive(filter)
+  const handleFilter = (link: string) => {
+    let newUrl = ''
+    if(active === link) {
+      setActive('')
+      newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'category',
+        value: null,
+      })
+    } else {
+      setActive(link)
+      newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: 'category',
+        value: link.toLowerCase(),
+      })
+
+    }
+    router.push(newUrl, {scroll: false})
   }
 
   return (
-    <ul className="flex gap-4 p-4 text-center justify-center text-white">
-      {filters.map((filter)=>(
-        <li
-        key={filter}
-        className={`${active === filter ? 'blue-yellow-grad-card':''} px-10 cursor-pointer py-2 rounded-lg capitalize`}
-        onClick={()=>handleClick(filter)}
+    <ul className="text-white-800 body-text no-scrollbar flex w-full max-w-full gap-2 overflow-auto py-12 sm:max-w-2xl">
+      {links.map((link)=>(
+        <button 
+          key={link}
+          onClick={()=> handleFilter(link)}
+          className={`${active === link && 'gradient_blue-purple'} whitespace-nowrap rounded-lg px-8 py-2.5 capitalize `}
         >
-          {filter}
-        </li>
+          {link}
+        </button>
       ))}
     </ul>
   )

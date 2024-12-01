@@ -1,30 +1,37 @@
-import Filters from '@/components/Filters'
-import ResourceCard from '@/components/ResourceCard'
-import SearchForm from '@/components/SearchForm'
-import { getResources } from '@/sanity/actions'
-import React from 'react'
+import Filters from "@/components/Filters"
+import Header from "@/components/Header"
+import ResourceCard from "@/components/ResourceCard"
+import SearchForm from "@/components/SearchForm"
+import { getResources } from "@/sanity/actions"
+// import { map } from "sanity/migrate"
 
-const Home = async () => {
+export const revalidate = 900
 
+interface Props {
+  searchParams: {[key: string] : string | undefined}
+}
+
+const Home = async ({searchParams}: Props) => { 
   const resources = await getResources({
     query: '',
-    category: '',
+    category: searchParams?.category || '',
     page: '1'
   })
 
-  // console.log(resources)
+  console.log(getResources)
+
   return (
-    <>
-      <section className=''>
-      <div className='m-auto w-[70vw] h-[30vh] flex justify-center items-center bg-banner rounded-[30px] mt-10 bg-cover bg-no-repeat'>
-        <h1 className='text-white font-extrabold text-[50px]'>The state of the world with internet</h1>
+   <main className="flex-center paddings mx-auto w-full max-w-screen-2xl flex-col">
+    <section className="nav-padding w-full">
+      <div className="flex-center relative min-h-[274px] w-full flex-col rounded-xl bg-banner bg-cover bg-center text-center">
+        <h1 className="sm:heading1 heading2 mb-6 text-center text-white">Stedy CodeMastery Resources</h1>
       </div>
-      <SearchForm/>
     </section>
+    <SearchForm/>
     <Filters/>
-    <section className='flex-center mt-6 w-full flex-col sm:mt-20'>
-      Header
-      <div className='mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start'>
+    <section className="flex-center mt-6 w-full flex-col sm:mt-20">
+      <Header/>
+      <div className="mt-12 flex w-full flex-wrap justify-center gap-16 sm:justify-start">
         {resources?.length > 0 ? (
           resources.map((resource: any)=>(
             <ResourceCard
@@ -32,18 +39,19 @@ const Home = async () => {
               title={resource.title}
               id={resource._id}
               image={resource.image}
-              downloadNumber={resource.downloadNumber}
-              slug={resource.slug}
+              downloadNumber={resource.views}
             />
           ))
         ):(
-          <p className='text-white'>
-            Resources not found!!
-          </p>
+          <>
+            <p className="body-regular text-white-400">
+              No Resource Found
+            </p>
+          </>
         )}
       </div>
     </section>
-    </>
+   </main>
   )
 }
 

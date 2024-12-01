@@ -1,47 +1,54 @@
-import React from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import Link from 'next/link'
-import Image from 'next/image'
+import Link from "next/link"
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import Image from "next/image"
 
-
-interface params {
-  title: string
+interface ResourceCardProps {
   id: string
+  title: string
   image: string
   downloadNumber: number
-  slug: string
 }
 
-const ResourceCard = ({title, id, image, downloadNumber, slug}:params) => {
+const ResourceCard = ({id, title, image, downloadNumber}: ResourceCardProps ) => {
   return (
-    <Card className='w-full max-w-fit border-0 !bg-transparent sm:max-w-[356px]'>
+    <Card className="w-full max-w-fit border-0 !bg-transparent sm:max-w-[356px]" >
       <Link href={`/resource/${id}`}>
-        <CardHeader className='flex-col gap-2.5 !p-0'>
-          <div className='h-fit w-full'>
+        <CardHeader className="flex-center flex-col gap-2.5 !p-0">
+          <div className="h-fit w-fit">
             <Image
               src={image}
-              className='h-full rounded-md object-cover'
+              className="h-full rounded-md object-cover"
               width={384}
               height={440}
-              alt={title}
+              alt="item image" 
             />
           </div>
-          <CardTitle className='text-white font-semibold line-clamp-1 w-full text-left'>{title}</CardTitle>
+          <CardTitle className="text-white paragraph-semibold line-clamp-1 w-full text-left">{title}</CardTitle>
         </CardHeader>
       </Link>
-      <CardContent>
-        <p>Card Content</p>
+      <CardContent className="flex-between mt-4 p-0">
+        <div className="flex-center body-medium gap-1.5 text-white">
+          <Image
+            src='/downloads.svg'
+            width={20}
+            height={20}
+            alt="download"
+          />
+          {downloadNumber}
+        </div>
+        <Link
+          href={`resource/${id}`}
+          className="flex-center text-gradient_purple-blue body-semibold gap-1.5"
+        >
+          Download Now
+          <Image
+            src='/arrow-blue.svg'
+            alt="download arrow"
+            width={13}
+            height={10}
+          />
+        </Link>
       </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter>
     </Card>
   )
 }

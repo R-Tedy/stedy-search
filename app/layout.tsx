@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      className="bg-[#082717]"
+      className="min-h-screen bg-black-100 font-poppins"
       >
         {children}
       </body>
