@@ -52,7 +52,7 @@ const schema = {
       type: 'string',
       validation: (Rule: any) => Rule.required(),
       options:{
-        list: ['magical', 'music', 'art', 'technology', 'religion', 'All'],
+        list: ['magical', 'music', 'art', 'technology', 'religion', 'all'],
       }
     }
   ]
